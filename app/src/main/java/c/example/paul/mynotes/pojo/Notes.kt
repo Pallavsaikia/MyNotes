@@ -6,10 +6,12 @@ import androidx.room.PrimaryKey
 @Entity
 data class Notes(  val title: String,
                    val description: String?,
-                   val image: String?,
                    val timesaved: Long,
                    val active: Boolean,
-                   val synched: Boolean
+                   val synced: Boolean,
+                   val isCanvas: Boolean,
+                   val serverId:String?
+
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

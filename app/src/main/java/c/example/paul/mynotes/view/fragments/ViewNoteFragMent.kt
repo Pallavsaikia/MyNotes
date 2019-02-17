@@ -6,11 +6,15 @@ import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import c.example.paul.mynotes.R
+import c.example.paul.mynotes.helper.DeleteImage
 import c.example.paul.mynotes.helper.FragmentTools
 import c.example.paul.mynotes.helper.PassValue
+import c.example.paul.mynotes.helper.RecyclerViewOnItemClickListener
+import c.example.paul.mynotes.pojo.ImagesList
 import c.example.paul.mynotes.pojo.Notes
 import c.example.paul.mynotes.view.adapter.ImageAdapter
 import c.example.paul.mynotes.viewmodel.NotesViewModel
@@ -18,18 +22,43 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_display_note.*
 import kotlinx.android.synthetic.main.fragment_view_note_frag_ment.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.toast
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.File
 
 
-class ViewNoteFragMent : Fragment(),AnkoLogger {
+class ViewNoteFragMent : Fragment(),AnkoLogger, RecyclerViewOnItemClickListener {
+    override fun recyclerViewOnItemClick(view: View?, position: Int?) {
+
+        val item=view!!.tag as ImagesList
+        val id= item!!.imageid
+
+
+
+
+        DeleteImage.deleteimage(item!!.imageName)
+
+        notesViewModel.preDeleteImage(id!!)
+        context!!.toast("deleted")
+        imageRecycleView.removeViewAt(position!!)
+        adapter!!.notifyItemRemoved(position!!)
+
+//        FragmentTools.replaceFragment(ViewNoteFragMent.instance(), activity!!.supportFragmentManager, R.id.notesContainer)
+
+
+    }
 
     companion object {
         fun instance()=ViewNoteFragMent()
     }
+    private var adapter:ImageAdapter?=null
 
     private val notesViewModel: NotesViewModel by viewModel()
     private var note:Notes?=null
+    private var listSize:Int=0
+
+    private var image: List<ImagesList>?=null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,22 +75,35 @@ class ViewNoteFragMent : Fragment(),AnkoLogger {
         note=PassValue!!.notes
         noteTitle.text=note!!.title
         noteDescription.text=note!!.description!!
+        val layoutManager = LinearLayoutManager(activity!!,LinearLayout.HORIZONTAL,false)
 
-        val image=note!!.image
-        if(image!=null) {
-            var imagearray = image!!.split(",")
-            val layoutManager = LinearLayoutManager(activity!!,LinearLayout.HORIZONTAL,false)
+        imageRecycleView.layoutManager = layoutManager
+        imageRecycleView.setHasFixedSize(true)
 
-            imageRecycleView.layoutManager = layoutManager
-            imageRecycleView.setHasFixedSize(true)
-
-            val adapter = ImageAdapter(activity!!, imagearray)
-
-            imageRecycleView.adapter = adapter
-        }
-//        Glide.with(this).load(imagearray[0]).into(noteimage)
+        populate()
 
 
+
+
+
+
+
+    }
+
+
+    fun populate(){
+        notesViewModel.getImage(note!!.id).observe(this, Observer {
+
+            if(it!!.isNotEmpty()) {
+                image=it!!
+
+                var imagelist:MutableList<ImagesList> = it!!.toMutableList()
+                adapter = ImageAdapter(activity!!, imagelist!!,this)
+                listSize=it.size!!
+                imageRecycleView.adapter = adapter
+            }
+
+        })
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.notemenu, menu)
@@ -78,8 +120,13 @@ class ViewNoteFragMent : Fragment(),AnkoLogger {
             }
 
             R.id.Delete -> {
+                note=PassValue!!.notes
+                image?.let {
+                    for (images in image!!) {
+                        DeleteImage.deleteimage(images!!.imageName)
+                    }
+                }
                 notesViewModel.preDelete(note!!.id)
-                deleteimage(note!!.image)
                 FragmentTools.replaceFragment(DisplayNoteFragment.instance(), activity!!.supportFragmentManager, R.id.notesContainer)
 
                 return true
@@ -91,17 +138,6 @@ class ViewNoteFragMent : Fragment(),AnkoLogger {
         return false
     }
 
-    private fun deleteimage(image: String?) {
-        if(image!=null) {
-            var imgarray = image!!.split(",")
-            for(i in imgarray){
-                val target= File(i)
-                if (target.exists() && target.isFile && target.canWrite()) {
-                    target.delete()
-                    Log.d("d_file", "" + target.getName())
-                }
-            }
-        }
 
-    }
 }
+

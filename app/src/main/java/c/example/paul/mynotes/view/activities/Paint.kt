@@ -134,9 +134,13 @@ class Paint : AppCompatActivity(), View.OnClickListener {
             val filename = time.toString()
             mDrawingView!!.setDrawingCacheEnabled(true)
             val imgSaved = MediaStore.Images.Media.insertImage(contentResolver, mDrawingView!!.getDrawingCache(), filename + ".png", "drawing")
+
+            val fileLocation=getRealPathFromURI(imgSaved.toUri())
+            val fileList= listOf(fileLocation)
+
             if (imgSaved != null) {
-                val notes= Notes("canvas$time",time.toString(),getRealPathFromURI(imgSaved.toUri()),System.currentTimeMillis(),true,false)
-                notesViewModel.insertNotes(notes)
+                val notes= Notes("canvas$time",time.toString(),System.currentTimeMillis(),true,false,true, null)
+                notesViewModel.insertNotes(notes,fileList)
                 startActivity<MainActivity>()
             } else {
                 val unsavedToast = Toast.makeText(

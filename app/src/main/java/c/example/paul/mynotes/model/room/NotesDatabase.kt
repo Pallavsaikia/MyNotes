@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import c.example.paul.mynotes.pojo.ImagesList
 import c.example.paul.mynotes.pojo.Notes
 
 @Database(
-    entities =[Notes::class],
+    entities =[Notes::class,ImagesList::class],
     version = 1
 )
 

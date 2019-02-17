@@ -2,24 +2,24 @@ package c.example.paul.mynotes.view.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.*
 import c.example.paul.mynotes.R
+import c.example.paul.mynotes.WorkSendBackgroud
 import c.example.paul.mynotes.helper.FragmentTools.replaceFragment
 import c.example.paul.mynotes.view.fragments.AddNoteFragment
 import c.example.paul.mynotes.view.fragments.DisplayNoteFragment
-import c.example.paul.mynotes.viewmodel.NotesViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.startActivity
-import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity(), AnkoLogger {
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        workmanager()
         setContentView(R.layout.activity_main)
         replaceFragment(DisplayNoteFragment.instance(), supportFragmentManager, R.id.notesContainer)
 
@@ -32,10 +32,25 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         addNotes.setOnClickListener {
 
 
-
-            replaceFragment(AddNoteFragment.instance(),supportFragmentManager,R.id.notesContainer)
+            replaceFragment(AddNoteFragment.instance(), supportFragmentManager, R.id.notesContainer)
 
         }
+
+    }
+
+    private fun workmanager() {
+        val constraint=Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val sendNoteData=PeriodicWorkRequest.Builder(
+            WorkSendBackgroud::class.java,15,TimeUnit.MINUTES)
+            .setConstraints(constraint)
+            .build()
+
+        val workManager=WorkManager.getInstance()
+//        workManager.enqueueUniquePeriodicWork("my_unique_worker",  ExistingPeriodicWorkPolicy.KEEP, sendNoteData)
+        workManager.enqueue(sendNoteData)
 
     }
 

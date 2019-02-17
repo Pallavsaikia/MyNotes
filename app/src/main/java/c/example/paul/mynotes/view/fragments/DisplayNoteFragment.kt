@@ -20,7 +20,7 @@ import c.example.paul.mynotes.view.adapter.MyNotesAdapter
 import c.example.paul.mynotes.viewmodel.NotesViewModel
 import kotlinx.android.synthetic.main.fragment_display_note.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.toast
+
 import org.koin.android.viewmodel.ext.android.viewModel
 
 

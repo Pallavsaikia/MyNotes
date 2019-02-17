@@ -88,11 +88,21 @@ class AddNoteFragment : Fragment() ,AnkoLogger{
             val description=description.text.toString()
             activity!!.toast("clicked $selectedPath")
             val time =System.currentTimeMillis()
-            val notes=Notes(title,description, selectedPath,time,true,false)
-            notesViewModel.insertNotes(notes)
-            activity!!.toast(selectedPath.toString())
-            selectedPath=null
-            FragmentTools.replaceFragment(DisplayNoteFragment.instance(), activity!!.supportFragmentManager, R.id.notesContainer)
+            val notes=Notes(title,description,time, active = true, synced = false, isCanvas = false, serverId = null)
+            if(selectedPath!=null) {
+                val imageList = selectedPath!!.split(",")
+                notesViewModel.insertNotes(notes, imageList)
+            }
+            else{
+                notesViewModel.insertNotes(notes, null)
+            }
+                activity!!.toast(selectedPath.toString())
+                selectedPath = null
+                FragmentTools.replaceFragment(
+                    DisplayNoteFragment.instance(),
+                    activity!!.supportFragmentManager,
+                    R.id.notesContainer
+                )
 
         }
 
