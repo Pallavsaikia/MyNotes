@@ -21,7 +21,7 @@ class NotesViewModel(application: Application) : AndroidViewModel(application){
         doAsync {
             val row=db.notesDao().insertNote(notes)
             for(imageLink in imageList!!){
-                val imageList=ImagesList(imageLink,row.toInt(),null,false,notes!!.isCanvas)
+                val imageList=ImagesList(imageLink,row.toInt(),null,false,notes!!.isCanvas,false)
                 val r=db.notesDao().inserImage(imageList)
             }
 

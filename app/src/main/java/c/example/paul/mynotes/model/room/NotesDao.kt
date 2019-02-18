@@ -22,7 +22,7 @@ interface NotesDao{
     fun getImage(deleted: Boolean,noteID : Int): LiveData<List<ImagesList>>
 
 
-    @Query("Update Notes set title=:title , description=:description  WHERE id=:id")
+    @Query("Update Notes set title=:title , description=:description, toBeUpdated=1  WHERE id=:id")
     fun updatenote(id:Int,title: String, description:String)
 
 
@@ -46,8 +46,8 @@ interface NotesDao{
     @Query("Delete from Notes where id=:id")
     fun deleteCanvas(id:Int)
 
-    @Query("update Notes set synced=1 where id=:noteID")
-    fun synchNote(noteID: Int)
+    @Query("update Notes set synced=1 , serverId=:serId where id=:noteID")
+    fun synchNote(noteID: Int,serId:Int)
 
 
 

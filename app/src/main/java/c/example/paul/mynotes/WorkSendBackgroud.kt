@@ -39,9 +39,13 @@ class WorkSendBackgroud(context : Context, params : WorkerParameters)
                 if(response.code()==200){
                     val responseGot=response.body()
                     if(responseGot!!.status=="success") {
+                        val serverID=responseGot.response.data.myNoteId!!
+                        serverID?.let {
+                            Log.d("response", response.toString())
+                            db.notesDao().synchNote(notes!!.id,serverID!!)
 
-                        Log.d("response", response.toString())
-                        db.notesDao().synchNote(notes!!.id)
+
+                        }
                     }
 
 

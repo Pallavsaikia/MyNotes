@@ -139,7 +139,7 @@ class Paint : AppCompatActivity(), View.OnClickListener {
             val fileList= listOf(fileLocation)
 
             if (imgSaved != null) {
-                val notes= Notes("canvas$time",time.toString(),System.currentTimeMillis(),true,false,true, null)
+                val notes= Notes("canvas$time",time.toString(),System.currentTimeMillis(),true,false,true, 0,false)
                 notesViewModel.insertNotes(notes,fileList)
                 startActivity<MainActivity>()
             } else {
