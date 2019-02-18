@@ -16,6 +16,7 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.lang.Exception
 
 
 class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(context, params) {
@@ -48,7 +49,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
                 } else {
 
                 }
-            } catch (e: java.net.SocketTimeoutException) {
+            } catch (e: Exception) {
 
             }
 
@@ -82,7 +83,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
                 } else {
 
                 }
-            } catch (e: java.net.SocketTimeoutException) {
+            } catch (e: Exception) {
 
             }
         }
@@ -125,7 +126,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
                     } else {
 
                     }
-                } catch (e: java.net.SocketTimeoutException) {
+                } catch (e: Exception) {
 
                 }
 
@@ -146,7 +147,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
         for (images in imagesList) {
             try {
                 sendMultiPart(images!!, serverId)
-            } catch (e: java.net.SocketTimeoutException) {
+            } catch (e: Exception) {
 
             }
         }
