@@ -13,7 +13,14 @@ class WorkSendBackgroud(context : Context, params : WorkerParameters)
     private val db= NotesDatabase(context)
     override fun doWork(): Result {
 
-         return Result.success()
+        db.notesDao().deleteDataNotSynced()
+        val unpdatedList=db.notesDao().getSynchData()
+        for(i in unpdatedList){
+            db.notesDao().deletePicNotSynced(i!!.id)
+        }
+        val syncList=db.notesDao().getSynchData()
+        Log.d("sync list size",syncList.size.toString())
+        return Result.success()
     }
 
 }

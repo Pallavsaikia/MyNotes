@@ -25,6 +25,10 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.io.File
+import androidx.recyclerview.widget.DefaultItemAnimator
+
+
+
 
 
 class ViewNoteFragMent : Fragment(),AnkoLogger, RecyclerViewOnItemClickListener {
@@ -33,18 +37,22 @@ class ViewNoteFragMent : Fragment(),AnkoLogger, RecyclerViewOnItemClickListener 
         val item=view!!.tag as ImagesList
         val id= item!!.imageid
 
-
-
-
         DeleteImage.deleteimage(item!!.imageName)
 
-        notesViewModel.preDeleteImage(id!!)
-        context!!.toast("deleted")
-        imageRecycleView.removeViewAt(position!!)
-        adapter!!.notifyItemRemoved(position!!)
 
-//        FragmentTools.replaceFragment(ViewNoteFragMent.instance(), activity!!.supportFragmentManager, R.id.notesContainer)
+        if(item!!.isCanvas){
+            notesViewModel!!.deleteCanvas(note!!.id)
+            FragmentTools.replaceFragment(DisplayNoteFragment.instance(), activity!!.supportFragmentManager, R.id.notesContainer)
 
+        }else {
+            notesViewModel.preDeleteImage(id!!)
+            context!!.toast("deleted")
+        }
+
+
+        adapter!!.notifyDataSetChanged()
+//        imageRecycleView.removeViewAt(position!!)
+//        adapter!!.notifyItemRemoved(position!!)
 
     }
 
@@ -78,15 +86,12 @@ class ViewNoteFragMent : Fragment(),AnkoLogger, RecyclerViewOnItemClickListener 
         val layoutManager = LinearLayoutManager(activity!!,LinearLayout.HORIZONTAL,false)
 
         imageRecycleView.layoutManager = layoutManager
+
         imageRecycleView.setHasFixedSize(true)
+        imageRecycleView.itemAnimator=null
+
 
         populate()
-
-
-
-
-
-
 
     }
 
@@ -99,6 +104,7 @@ class ViewNoteFragMent : Fragment(),AnkoLogger, RecyclerViewOnItemClickListener 
 
                 var imagelist:MutableList<ImagesList> = it!!.toMutableList()
                 adapter = ImageAdapter(activity!!, imagelist!!,this)
+                adapter!!.setHasStableIds(true)
                 listSize=it.size!!
                 imageRecycleView.adapter = adapter
             }

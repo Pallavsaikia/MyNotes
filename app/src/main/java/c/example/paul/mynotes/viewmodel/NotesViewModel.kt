@@ -17,20 +17,22 @@ class NotesViewModel(application: Application) : AndroidViewModel(application){
 
     fun insertNotes(notes: Notes,imageList : List<String>?){
 
-        Log.d("BookmarkVsM", "Here")
+
         doAsync {
             val row=db.notesDao().insertNote(notes)
             for(imageLink in imageList!!){
-                val imageList=ImagesList(imageLink,row.toInt(),null,false)
+                val imageList=ImagesList(imageLink,row.toInt(),null,false,notes!!.isCanvas)
                 val r=db.notesDao().inserImage(imageList)
             }
 
 
 
         }
-
-
     }
+
+
+
+
     fun getnotes():LiveData<List<Notes>>{
         return db.notesDao().getNotes(true)
 
@@ -60,6 +62,12 @@ class NotesViewModel(application: Application) : AndroidViewModel(application){
     fun preDeleteImage(id:Int){
         doAsync {
             val row=db.notesDao().preDeleteImage(id)
+        }
+    }
+
+    fun deleteCanvas(id: Int){
+        doAsync {
+            val row=db.notesDao().deleteCanvas(id)
         }
     }
 

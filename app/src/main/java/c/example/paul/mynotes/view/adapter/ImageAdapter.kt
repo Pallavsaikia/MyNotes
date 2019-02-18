@@ -18,6 +18,11 @@ class ImageAdapter(val context: Context,var image:MutableList<ImagesList>?,val c
 
     }
 
+    override fun getItemId(position: Int): Long {
+        var images= image!![position]
+        return images.imageid.toLong()
+    }
+
 
 
 
