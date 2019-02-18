@@ -43,7 +43,6 @@ class EditNoteFragment : Fragment(),AnkoLogger {
                 FragmentTools.replaceFragment(DisplayNoteFragment.instance(), activity!!.supportFragmentManager, R.id.notesContainer)
                 return true
             }
-
             else -> {
             }
         }

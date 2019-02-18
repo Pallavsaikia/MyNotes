@@ -47,6 +47,7 @@ class NotesViewModel(application: Application) : AndroidViewModel(application){
 //
     fun updateNotes(id: Int , title: String, description :String){
         doAsync {
+            Log.d("asda", id.toString()+title+description)
             val row=db.notesDao().updatenote(id,title,description)
         }
 
