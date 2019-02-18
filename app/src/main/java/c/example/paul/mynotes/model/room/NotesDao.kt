@@ -21,7 +21,6 @@ interface NotesDao{
     @Query("Select * from ImagesList  where deleteStatus =:deleted and noteId=:noteID")
     fun getImage(deleted: Boolean,noteID : Int): LiveData<List<ImagesList>>
 
-
     @Query("Update Notes set title=:title , description=:description, toBeUpdated=1  WHERE id=:id")
     fun updatenote(id:Int,title: String, description:String)
 
@@ -49,6 +48,23 @@ interface NotesDao{
     @Query("update Notes set synced=1 , serverId=:serId where id=:noteID")
     fun synchNote(noteID: Int,serId:Int)
 
+    @Query("Select * from ImagesList  where deleteStatus =:deleted and noteId=:noteID and isSynced=:updated")
+    fun getImageSync(deleted: Boolean,noteID : Int,updated:Boolean): List<ImagesList>
+
+    @Query("Update ImagesList set serverId=:serId and isSynced=1  where imageid=:id")
+    fun setNoteImageSynced(serId: Int,id:Int)
+
+    @Query("Select * from Notes where  toBeUpdated=1 and active=1")
+    fun updateNoteListSync():List<Notes>
+
+    @Query("Update Notes set toBeUpdated=0 where id=:id")
+    fun updateNoteSync(id:Int)
+
+    @Query("Select * from Notes where active=0")
+    fun getToBeDeleted():List<Notes>
+
+    @Query("Delete from Notes where id=:id")
+    fun deleteNotes(id:Int)
 
 
 }

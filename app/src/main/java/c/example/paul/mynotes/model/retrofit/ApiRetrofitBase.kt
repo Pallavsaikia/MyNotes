@@ -20,8 +20,6 @@ class  ApiRetrofitBase{
             logging.level = HttpLoggingInterceptor.Level.BODY
         }
         return OkHttpClient.Builder()
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
                 .addInterceptor(logging)
 //                .addInterceptor(TokenRewriteInterceptor(context))
                 .build()
