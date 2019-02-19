@@ -46,7 +46,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
                 if (response.code() == 200) {
                     Log.d("updated ", response.body().toString())
                     if (response.body()!!.status == "success") {
-
+                        db.notesDao().deleteSyncNotes(notes!!.id)
 
                     } else {
 

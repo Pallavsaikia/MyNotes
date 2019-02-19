@@ -40,6 +40,9 @@ interface NotesDao{
     @Query("Delete from Notes where active=0 and synced=0")
     fun deleteDataNotSynced()
 
+    @Query("Delete from Notes where active=0 and id=:id")
+    fun deleteSyncNotes(id:Int)
+
     @Query("Delete From ImagesList where deleteStatus=1 and noteId=:id")
     fun deletePicNotSynced(id:Int)
 
