@@ -67,7 +67,7 @@ interface NotesDao{
     @Query("Delete from Notes where id=:id")
     fun deleteNotes(id:Int)
 
-    @Query("Select Notes.id as noteID , Notes.serverId as noteServ, ImagesList.imageName as imgName  from Notes , ImagesList where Notes.id=ImagesList.noteId and ImagesList.isSynced=0 and Notes.serverId !=null and Notes.active=1 and ImagesList.deleteStatus=0")
+    @Query("Select Notes.id as noteID , Notes.serverId as noteServ, ImagesList.imageName as imgName  from Notes , ImagesList where Notes.id=ImagesList.noteId and ImagesList.isSynced=0 and Notes.serverId is not null and Notes.active=1 and ImagesList.deleteStatus=0")
     fun getAll():List<NotesandImage>
 
 

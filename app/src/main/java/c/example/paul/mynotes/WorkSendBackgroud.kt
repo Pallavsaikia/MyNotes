@@ -143,8 +143,10 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
 
         //retry image not sent
         val notsyncImg=db.notesDao().getAll()
+//        Log.d("trying",notsyncImg[0].noteServ.toString())
 
         for(images in notsyncImg){
+
             sendImage(images.noteID,images.noteServ)
         }
 
@@ -213,14 +215,9 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
                         db.notesDao().setNoteImageSynced(serverID, images!!.imageid)
                     }
                 }
-
-
             } else {
-
             }
-
         }
-
     }
 
 
