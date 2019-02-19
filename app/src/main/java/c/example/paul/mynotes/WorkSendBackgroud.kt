@@ -163,7 +163,8 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
 
     private fun sendImage(id: Int, serverId: Int) {
         val imagesList = db.notesDao().getImageSync(false, id, false)
-        Log.d("Image", imagesList!!.size.toString())
+        Log.d("Image", imagesList[0].serverId.toString())
+
         for (images in imagesList) {
             try {
                 sendMultiPart(images!!, serverId)
@@ -210,9 +211,11 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
                 val responseGot = response.body()
                 if (responseGot!!.status == "success") {
                     val serverID = responseGot.response.data.myNoteImageId
+                    Log.d("serverid",serverID.toString())
                     serverID?.let {
-                        Log.d("response", response.toString())
+
                         db.notesDao().setNoteImageSynced(serverID, images!!.imageid)
+
                     }
                 }
             } else {

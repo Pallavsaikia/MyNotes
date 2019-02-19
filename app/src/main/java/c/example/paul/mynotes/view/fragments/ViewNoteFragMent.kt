@@ -41,7 +41,8 @@ class ViewNoteFragMent : Fragment(),AnkoLogger, RecyclerViewOnItemClickListener 
 
 
         if(item!!.isCanvas){
-            notesViewModel!!.deleteCanvas(note!!.id)
+            notesViewModel!!.preDelete(id!!)
+            notesViewModel.preDelete(note!!.id)
             FragmentTools.replaceFragment(DisplayNoteFragment.instance(), activity!!.supportFragmentManager, R.id.notesContainer)
 
         }else {

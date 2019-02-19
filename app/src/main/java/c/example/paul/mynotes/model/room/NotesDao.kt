@@ -52,7 +52,7 @@ interface NotesDao{
     @Query("Select * from ImagesList  where deleteStatus =:deleted and noteId=:noteID and isSynced=:updated")
     fun getImageSync(deleted: Boolean,noteID : Int,updated:Boolean): List<ImagesList>
 
-    @Query("Update ImagesList set serverId=:serId and isSynced=1  where imageid=:id")
+    @Query("Update ImagesList set serverId=:serId , isSynced=1  where imageid=:id")
     fun setNoteImageSynced(serId: Int,id:Int)
 
     @Query("Select * from Notes where  toBeUpdated=1 and active=1")
