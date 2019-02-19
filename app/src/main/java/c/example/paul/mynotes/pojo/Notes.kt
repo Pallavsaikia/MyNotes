@@ -4,14 +4,16 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(indices = [
+    Index(value = arrayOf("id"), unique = true)
+])
 data class Notes(  val title: String,
                    val description: String?,
                    val timesaved: Long,
                    val active: Boolean,
                    val synced: Boolean,
                    val isCanvas: Boolean,
-                   val serverId:Int,
+                   val serverId:Int?,
                    val toBeUpdated: Boolean
 
 

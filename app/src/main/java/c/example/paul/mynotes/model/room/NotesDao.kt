@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import c.example.paul.mynotes.pojo.ImagesList
 import c.example.paul.mynotes.pojo.Notes
+import c.example.paul.mynotes.pojo.NotesandImage
 
 @Dao
 interface NotesDao{
@@ -65,6 +66,9 @@ interface NotesDao{
 
     @Query("Delete from Notes where id=:id")
     fun deleteNotes(id:Int)
+
+    @Query("Select Notes.id as noteID , Notes.serverId as noteServ, ImagesList.imageName as imgName  from Notes , ImagesList where Notes.id=ImagesList.noteId and ImagesList.isSynced=0 and Notes.serverId !=null and Notes.active=1 and ImagesList.deleteStatus=0")
+    fun getAll():List<NotesandImage>
 
 
 }

@@ -24,20 +24,25 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
 
     private val apiService = ApiRetrofitBase().getReply(context)!!.create(ApiRetrofitInterface::class.java)
     override fun doWork(): Result {
+
         //deleting data not synched and deleted
         db.notesDao().deleteDataNotSynced()
         val unpdatedList = db.notesDao().getSynchData()
         for (i in unpdatedList) {
             db.notesDao().deletePicNotSynced(i!!.id)
         }
+
+        //----------------------
+
         //delete synch
+
 
         val notesToDelete = db.notesDao().getToBeDeleted()
 
         for (notes in notesToDelete) {
             val serverId = notes.serverId
             try {
-                val response = apiService.DeleteNote(Constants.token, serverId).execute()
+                val response = apiService.DeleteNote(Constants.token, serverId!!).execute()
                 if (response.code() == 200) {
                     Log.d("updated ", response.body().toString())
                     if (response.body()!!.status == "success") {
@@ -55,7 +60,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
 
         }
 
-        //-----------------------
+
         //------------------------------------
 
         //update
@@ -70,7 +75,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
                     notes.description!!,
                     notes.timesaved,
                     notes.isCanvas,
-                    notes.serverId
+                    notes.serverId!!
                 ).execute()
                 if (response.code() == 200) {
                     Log.d("updated ", response.body().toString())
@@ -92,7 +97,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
         //-------------------------------
 
 
-        //------------------------------
+        //------------------------------Insert note
         val syncList = db.notesDao().getSynchData()
 
 
@@ -118,7 +123,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
                             serverID?.let {
                                 Log.d("response", response.toString())
                                 db.notesDao().synchNote(notes!!.id, serverID!!)
-                                sendImage(notes!!.id, serverID)
+//                                sendImage(notes!!.id, serverID)
                             }
                         }
 
@@ -132,6 +137,19 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
 
             }
         }
+
+        //-------------------------------
+
+
+        //retry image not sent
+        val notsyncImg=db.notesDao().getAll()
+
+        for(images in notsyncImg){
+            sendImage(images.noteID,images.noteServ)
+        }
+
+
+        //---------------------------------
 
 
 

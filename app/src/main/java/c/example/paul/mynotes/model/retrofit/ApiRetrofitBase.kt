@@ -21,6 +21,8 @@ class  ApiRetrofitBase{
         }
         return OkHttpClient.Builder()
                 .addInterceptor(logging)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
 //                .addInterceptor(TokenRewriteInterceptor(context))
                 .build()
     }
