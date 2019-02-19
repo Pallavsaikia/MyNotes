@@ -34,7 +34,7 @@ interface NotesDao{
     fun getSynchData():List<Notes>
 
 
-    @Query("Update ImagesList set deleteStatus=1 where imageid=:id")
+    @Query("Update ImagesList set isSynced=1, deleteStatus=1 where imageid=:id")
     fun preDeleteImage(id:Int)
 
     @Query("Delete from Notes where active=0 and synced=0")
@@ -45,6 +45,12 @@ interface NotesDao{
 
     @Query("Delete From ImagesList where deleteStatus=1 and noteId=:id")
     fun deletePicNotSynced(id:Int)
+
+    @Query("Select * from ImagesList where deleteStatus=1")
+    fun getIndividualDeleteImage():List<ImagesList>
+
+    @Query("Delete from ImagesList where imageid=:id")
+    fun deleteImage(id:Int)
 
     @Query("Delete from Notes where id=:id")
     fun deleteCanvas(id:Int)

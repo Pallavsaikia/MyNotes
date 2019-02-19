@@ -36,9 +36,14 @@ interface ApiRetrofitInterface{
 
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "my-note/",hasBody = true)
-    fun DeleteNote(@Header("Authorization") token: String,
+    fun deleteNote(@Header("Authorization") token: String,
                    @Field("my_note_id") noteId:Int):Call<NoteSyncResponse>
 
+
+    @FormUrlEncoded
+    @HTTP(method = "DELETE", path = "my-note-image/",hasBody = true)
+    fun deleteImage(@Header("Authorization") token: String,
+                   @Field("my_note_image_id") noteId:Int):Call<NoteSyncResponse>
 
 
 

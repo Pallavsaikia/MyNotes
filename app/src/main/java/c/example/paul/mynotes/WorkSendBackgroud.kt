@@ -34,6 +34,36 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
 
         //----------------------
 
+
+        //delete individual image
+
+        val individualImageNotDeleted=db.notesDao().getIndividualDeleteImage()
+        Log.d("imagesize ",individualImageNotDeleted.size.toString())
+        for ( images in individualImageNotDeleted){
+            try {
+                val response = apiService.deleteImage(Constants.token, images.serverId!!).execute()
+                if (response.code() == 200) {
+
+                    val res=response.body()
+                    if (res!!.status == "success") {
+//                        db.notesDao().deleteSyncNotes(notes!!.id)
+                        Log.d("deleted","this is running")
+
+                        db.notesDao().deleteImage(images.imageid)
+
+                    } else {
+
+                    }
+                } else {
+
+                }
+            }catch (e: Exception) {
+
+            }
+        }
+
+        //---------------------
+
         //delete synch
 
 
@@ -42,7 +72,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
         for (notes in notesToDelete) {
             val serverId = notes.serverId
             try {
-                val response = apiService.DeleteNote(Constants.token, serverId!!).execute()
+                val response = apiService.deleteNote(Constants.token, serverId!!).execute()
                 if (response.code() == 200) {
                     Log.d("updated ", response.body().toString())
                     if (response.body()!!.status == "success") {
@@ -163,7 +193,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
 
     private fun sendImage(id: Int, serverId: Int) {
         val imagesList = db.notesDao().getImageSync(false, id, false)
-        Log.d("Image", imagesList[0].serverId.toString())
+//        Log.d("Image", imagesList[0].serverId.toString())
 
         for (images in imagesList) {
             try {
