@@ -8,7 +8,7 @@ import c.example.paul.mynotes.WorkSendBackgroud
 import c.example.paul.mynotes.helper.FragmentTools.replaceFragment
 import c.example.paul.mynotes.view.fragments.AddNoteFragment
 import c.example.paul.mynotes.view.fragments.DisplayNoteFragment
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_mynotes.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.startActivity
 import java.util.concurrent.TimeUnit
@@ -20,7 +20,7 @@ class MyNotesActivity : AppCompatActivity(), AnkoLogger {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         workmanager()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_mynotes)
         replaceFragment(DisplayNoteFragment.instance(), supportFragmentManager, R.id.notesContainer)
 
         addCanvas.setOnClickListener {
