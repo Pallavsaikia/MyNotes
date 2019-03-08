@@ -26,7 +26,6 @@ import c.example.paul.mynotes.viewmodel.DrawingView
 import c.example.paul.mynotes.viewmodel.NotesViewModel
 import kotlinx.android.synthetic.main.activity_paint.*
 import org.jetbrains.anko.startActivity
-import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class Paint : AppCompatActivity(), View.OnClickListener {
@@ -141,7 +140,7 @@ class Paint : AppCompatActivity(), View.OnClickListener {
             if (imgSaved != null) {
                 val notes= Notes("canvas$time",time.toString(),System.currentTimeMillis(),true,false,true, null,false)
                 notesViewModel.insertNotes(notes,fileList)
-                startActivity<MainActivity>()
+                startActivity<MyNotesActivity>()
             } else {
                 val unsavedToast = Toast.makeText(
                     applicationContext,

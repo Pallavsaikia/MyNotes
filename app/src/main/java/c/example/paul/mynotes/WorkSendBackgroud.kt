@@ -9,7 +9,7 @@ import androidx.work.WorkerParameters
 import c.example.paul.mynotes.helper.Constants
 import c.example.paul.mynotes.helper.GetImageUri
 import c.example.paul.mynotes.model.retrofit.ApiRetrofitBase
-import c.example.paul.mynotes.model.retrofit.ApiRetrofitInterface
+import c.example.paul.mynotes.model.retrofit.NotesApiInterface
 import c.example.paul.mynotes.model.room.NotesDatabase
 import c.example.paul.mynotes.pojo.ImagesList
 import okhttp3.MediaType
@@ -22,7 +22,7 @@ import java.lang.Exception
 class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(context, params) {
     private val db = NotesDatabase(context)
 
-    private val apiService = ApiRetrofitBase().getReply(context)!!.create(ApiRetrofitInterface::class.java)
+    private val apiService = ApiRetrofitBase().getReply(context)!!.create(NotesApiInterface::class.java)
     override fun doWork(): Result {
 
         //deleting data not synched and deleted

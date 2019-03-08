@@ -14,7 +14,7 @@ import org.jetbrains.anko.startActivity
 import java.util.concurrent.TimeUnit
 
 
-class MainActivity : AppCompatActivity(), AnkoLogger {
+class MyNotesActivity : AppCompatActivity(), AnkoLogger {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
