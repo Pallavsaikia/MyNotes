@@ -16,7 +16,7 @@ import androidx.room.PrimaryKey
 )
 data class ImagesList(val imageName:String,
                       val noteId:Int,
-                      val serverId:Int?,
+                      val serverId:String?,
                       val deleteStatus: Boolean,
                       val isCanvas:Boolean,
                       val isSynced:Boolean

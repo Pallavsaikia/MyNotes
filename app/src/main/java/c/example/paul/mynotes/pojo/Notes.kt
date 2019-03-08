@@ -13,7 +13,7 @@ data class Notes(  val title: String,
                    val active: Boolean,
                    val synced: Boolean,
                    val isCanvas: Boolean,
-                   val serverId:Int?,
+                   val serverId:String?,
                    val toBeUpdated: Boolean
 
 

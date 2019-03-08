@@ -56,13 +56,13 @@ interface NotesDao{
     fun deleteCanvas(id:Int)
 
     @Query("update Notes set synced=1 , serverId=:serId where id=:noteID")
-    fun synchNote(noteID: Int,serId:Int)
+    fun synchNote(noteID: Int,serId:String)
 
     @Query("Select * from ImagesList  where deleteStatus =:deleted and noteId=:noteID and isSynced=:updated")
     fun getImageSync(deleted: Boolean,noteID : Int,updated:Boolean): List<ImagesList>
 
     @Query("Update ImagesList set serverId=:serId , isSynced=1  where imageid=:id")
-    fun setNoteImageSynced(serId: Int,id:Int)
+    fun setNoteImageSynced(serId: String,id:Int)
 
     @Query("Select * from Notes where  toBeUpdated=1 and active=1")
     fun updateNoteListSync():List<Notes>

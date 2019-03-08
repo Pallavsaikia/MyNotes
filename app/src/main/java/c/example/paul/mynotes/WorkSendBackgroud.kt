@@ -191,7 +191,7 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
         return Result.success()
     }
 
-    private fun sendImage(id: Int, serverId: Int) {
+    private fun sendImage(id: Int, serverId: String) {
         val imagesList = db.notesDao().getImageSync(false, id, false)
 //        Log.d("Image", imagesList[0].serverId.toString())
 
@@ -205,15 +205,15 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
 
     }
 
-    fun sendMultiPart(images: ImagesList, serverId: Int) {
+    fun sendMultiPart(images: ImagesList, serverId: String) {
         var body: MultipartBody.Part? = null
         var photoPath: String?
 
 
-        if (images!!.isCanvas) {
-            photoPath = GetImageUri.getCanvasUri(images!!.imageName)
+        if (images.isCanvas) {
+            photoPath = GetImageUri.getCanvasUri(images.imageName)
         } else {
-            photoPath = GetImageUri.getImageUri(images!!.imageName)
+            photoPath = GetImageUri.getImageUri(images.imageName)
         }
 
 
@@ -230,18 +230,19 @@ class WorkSendBackgroud(context: Context, params: WorkerParameters) : Worker(con
 
             // MultipartBody.Part is used to send also the actual file name
             body = MultipartBody.Part.createFormData("image", file.name, requestFile)
-            Log.d("here body", body.toString())
-
+            Log.d("here body", serverId)
+            val servId= RequestBody.create(
+            okhttp3.MultipartBody.FORM, serverId)
             val response = apiService.sendNoteImage(
                 Constants.token,
-                serverId, body
+                servId, body
             )
                 .execute()
             if (response.code() == 200) {
                 val responseGot = response.body()
                 if (responseGot!!.status == "success") {
                     val serverID = responseGot.response.data.myNoteImageId
-                    Log.d("serverid",serverID.toString())
+                    Log.d("serverid",serverID)
                     serverID?.let {
 
                         db.notesDao().setNoteImageSynced(serverID, images!!.imageid)
