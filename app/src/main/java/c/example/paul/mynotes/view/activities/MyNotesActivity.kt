@@ -49,7 +49,7 @@ class MyNotesActivity : AppCompatActivity(), AnkoLogger {
             .build()
 
         val workManager=WorkManager.getInstance()
-//        workManager.enqueueUniquePeriodicWork("my_unique_worker",  ExistingPeriodicWorkPolicy.KEEP, sendNoteData)
+//        workManager.enqueueUniquePerisodicWork("my_unique_worker",  ExistingPeriodicWorkPolicy.KEEP, sendNoteData)
         workManager.enqueue(sendNoteData)
 
     }
